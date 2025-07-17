@@ -30,6 +30,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     class Meta:
+        ordering = ['date_joined']
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
         constraints = [
             models.UniqueConstraint(
                 name='unique_first_name_and_last_name',
@@ -38,4 +41,4 @@ class User(AbstractUser):
         ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f'{self.first_name.capitalize()} {self.last_name.capitalize()}'
