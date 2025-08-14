@@ -15,8 +15,15 @@ class UserSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class TagSerializer(ModelSerializer):
+    class Meta:
+        model = models.Tag
+        fields = '__all__'
+
+
 class CommentSerializer(ModelSerializer):
     owner = UserSerializer(many=False)
+    tag = TagSerializer(many=True)
 
     class Meta:
         model = models.PostComment

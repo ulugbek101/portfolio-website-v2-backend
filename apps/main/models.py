@@ -8,13 +8,14 @@ User = get_user_model()
 
 
 class Post(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(verbose_name=_('ID'), default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    created = models.DateTimeField(verbose_name=_('Created date'), auto_now_add=True)
+    updated = models.DateTimeField(verbose_name=_('Updated date'), auto_now=True)
     title = models.CharField(verbose_name=_('Title'), max_length=255, unique=True)
     content = models.TextField(verbose_name=_('Content'))
-    poster_image = models.ImageField(default='posts/post-default.png', upload_to='posts/')
+    poster_image = models.ImageField(verbose_name=_('Poster image'), default='posts/post-default.png', upload_to='posts/')
+    tags = models.ManyToManyField(to='Tag', verbose_name=_('Tags'), related_name='tags')
     is_active = models.BooleanField(verbose_name=_('Is active'), default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.title}'
@@ -26,12 +27,12 @@ class Post(models.Model):
 
 
 class PostComment(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(verbose_name=_('ID'), default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    created = models.DateTimeField(verbose_name=_('Created date'), auto_now_add=True)
+    updated = models.DateTimeField(verbose_name=_('Updated date'), auto_now=True)
     owner = models.ForeignKey(verbose_name=_('Author'), to=User, on_delete=models.CASCADE)
     reply_to = models.ForeignKey(verbose_name=_('Reply to'), to='self', on_delete=models.SET_NULL, null=True, blank=True)
     text = models.TextField(verbose_name=_('Comment'))
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.owner} - {self.created} - {self.text[:50]}'
@@ -40,3 +41,18 @@ class PostComment(models.Model):
         ordering = ['-created']
         verbose_name = _('Post comment')
         verbose_name_plural = _('Post comments')
+
+
+class Tag(models.Model):
+    id = models.UUIDField(verbose_name=_('ID'), default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    created = models.DateTimeField(verbose_name=_('Created date'), auto_now_add=True)
+    updated = models.DateTimeField(verbose_name=_('Updated date'), auto_now=True)
+    name = models.CharField(verbose_name=_('Tag name'), max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-created']
+        verbose_name = _('Tag')
+        verbose_name_plural = _('Tags')
