@@ -14,7 +14,7 @@ class Post(models.Model):
     title = models.CharField(verbose_name=_('Title'), max_length=255, unique=True)
     content = models.TextField(verbose_name=_('Content'))
     poster_image = models.ImageField(verbose_name=_('Poster image'), default='posts/post-default.png', upload_to='posts/')
-    tags = models.ManyToManyField(to='Tag', verbose_name=_('Tags'), related_name='tags')
+    tags = models.ManyToManyField(to='Tag', verbose_name=_('Tags'), related_name='tags', blank=True)
     is_active = models.BooleanField(verbose_name=_('Is active'), default=True)
 
     def __str__(self):
