@@ -9,8 +9,8 @@ env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env.str('SECRET_KEY')
-DEBUG = env.int('DEBUG')  # 1 or 0
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')  # '127.0.1,localhost,thedevu101.uz'
+DEBUG = env.bool('DEBUG')  # 1 or 0
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.1', 'localhost'])  # '127.0.1,localhost,thedevu101.uz'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -95,7 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = env.str('DEFAULT_LANGUAGE_CODE')  # 'en-us'
+LANGUAGE_CODE = env.str('DEFAULT_LANGUAGE_CODE', 'en-us')  # 'en-us'
 LANGUAGES = [
     ['en', _('English')],
     ['ru', _('Russian')],
@@ -105,7 +105,7 @@ LOCALE_PATHS = [
     BASE_DIR / 'locale'
 ]
 
-TIME_ZONE = env.str('DEFAULT_TIME_ZONE')  # 'Asia/Tashkent'
+TIME_ZONE = env.str('DEFAULT_TIME_ZONE', 'Asia/Tashkent')  # 'Asia/Tashkent'
 
 USE_I18N = True
 USE_TZ = True
